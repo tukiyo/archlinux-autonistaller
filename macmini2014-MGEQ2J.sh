@@ -138,5 +138,5 @@ $CHROOT netctl enable bond0
 #-------------
 set +x
 echo "--------------------------------"
-echo "install finished. prease reboot."
+echo "install finished. please reboot."
 echo "--------------------------------"
