@@ -115,6 +115,7 @@ $CHROOT hwclock --systohc --utc
 #-------------------
 $CHROOT mkinitcpio -p linux
 $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
+$CHROOT sed -i -e 's/^GRUB_TIMEOUT=5$/GRUB_TIMEOUT=1/' /etc/default/grub
 $CHROOT grub-mkconfig -o /boot/grub/grub.cfg
 
 #-------------
