@@ -2,7 +2,14 @@
 set -ux
 CHROOT="arch-chroot /mnt"
 PACMAN="$CHROOT pacman -S --noconfirm"
-YAOURT="$CHROOT yaourt -S --noconfirm"
+YAOURT="$CHROOT sudo -u vagrant yaourt -S --noconfirm"
+
+#-----------------------------------------------------------------------
+# yaourt用にvagrantユーザを作成する。パスワードはvagrant。後で消すこと!!
+#-----------------------------------------------------------------------
+sed -i -e 's@# %wheel ALL=(ALL) NOPASSWD: ALL@%wheel ALL=(ALL) NOPASSWD: ALL@g' /mnt/etc/sudoers
+PASS=$(perl -e 'print crypt("vagrant", "salt"),"\n"')
+$CHROOT useradd -m -G wheel -p ${PASS} vagrant
 
 #---------
 # packages
@@ -10,20 +17,20 @@ YAOURT="$CHROOT yaourt -S --noconfirm"
 $PACMAN \
   net-tools wget screen \
   zsh git tig ranger ack w3m
-#$YAOURT nkf
-#$YAOURT aur/etckeeper
+$YAOURT nkf
+$YAOURT aur/etckeeper
 
 #------------
 # container
 #------------
 $PACMAN docker lxc
-#$YAOURT pipework-git
+$YAOURT pipework-git
 
 #------------
 # fcron
 #------------
-#$YAOURT fcron
-#$CHROOT systemctl enable fcron
+$YAOURT fcron
+$CHROOT systemctl enable fcron
 
 #------------
 # ntp
