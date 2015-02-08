@@ -157,7 +157,7 @@ $CHROOT pacman -Sy --noconfirm archlinuxfr/yaourt
 #-------------
 $CHROOT pacman -Syu --noconfirm
 $CHROOT pacman -Sc --noconfirm
-$CHROOT echo "$NEW_HOSTNAME" >  /etc/hostname
+$CHROOT echo "$NEW_HOSTNAME" > /mnt/etc/hostname
 $CHROOT systemctl enable sshd
 $CHROOT passwd
 set +x
