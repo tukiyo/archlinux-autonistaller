@@ -7,7 +7,7 @@ YAOURT="$CHROOT sudo -u vagrant yaourt -S --noconfirm"
 #-----------------------------------------------------------------------
 # yaourt用にvagrantユーザを作成する。パスワードはvagrant。後で消すこと!!
 #-----------------------------------------------------------------------
-sed -i -e 's@# %wheel ALL=(ALL) NOPASSWD: ALL@%wheel ALL=(ALL) NOPASSWD: ALL@g' /mnt/etc/sudoers
+echo "vagrant ALL=(ALL) NOPASSWD: ALL" > /mnt/etc/sudoers.d/vagrant
 PASS=$(perl -e 'print crypt("vagrant", "salt"),"\n"')
 $CHROOT useradd -m -G wheel -p ${PASS} vagrant
 
