@@ -1,6 +1,5 @@
 #!/bin/sh
-
-set -x
+set -ux
 CHROOT="arch-chroot /mnt"
 PACMAN="$CHROOT pacman -S --noconfirm"
 YAOURT="$CHROOT yaourt -S --noconfirm"
@@ -10,8 +9,9 @@ YAOURT="$CHROOT yaourt -S --noconfirm"
 #---------
 $PACMAN \
   net-tools wget screen \
-  zsh git tig ranger ack w3m \
+  zsh git tig ranger ack w3m
 $YAOURT nkf fcron
+$YAOURT aur/etckeeper
 
 $PACMAN \
   docker lxc pipework-git
@@ -19,8 +19,8 @@ $PACMAN \
 #------------
 # ntp
 #------------
-$PACMAN ntpd
-$CHROOT sed 's/^server/#server/g' /mnt/etc/ntp.conf
+$PACMAN ntp
+$CHROOT sed -i -e 's/^server/#server/g' /mnt/etc/ntp.conf
 grep "mfeed" /mnt/etc/ntp.conf
 if [ $? != 0 ];then
   cat >> /mnt/etc/ntp.conf <<EOF
