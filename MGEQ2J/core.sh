@@ -4,11 +4,11 @@ set -ux
 #----------------------
 # ネットワーク設定用
 #----------------------
-BOND0='192.168.100.2/24'
+BR0='192.168.100.2/24'
 GATEWAY='192.168.100.1'
 DNS1='8.8.8.8'
 DNS2='8.8.4.4'
-BINDSTOINTERFACES="enp3s0f0"
+BOND0_INTERFACES="enp3s0f0"
 NEW_HOSTNAME="macmini01.local"
 
 #----------------------
@@ -123,21 +123,34 @@ $CHROOT grub-mkconfig -o /boot/grub/grub.cfg
 $CHROOT pacman -S --noconfirm netctl ifenslave
 echo "net.ipv4.ip_forward=1" > /mnt/etc/sysctl.d/99-sysctl.conf
 
+#-----------------------
+# chroot->network->bond0
+#-----------------------
 cat > /mnt/etc/netctl/bond0 <<EOF
 Description='Bond0 Interface'
 Interface='bond0'
 Connection=bond
-BindsToInterfaces=($BINDSTOINTERFACES)
-IP=static
-Address=('$BOND0')
-Gateway='$GATEWAY'
-DNS=('$DNS1' '$DNS2')
+BindsToInterfaces=($BOND0_INTERFACES)
 EOF
 cat > /mnt/etc/modprobe.d/bonding.conf <<EOF
 options bonding miimon=100
 options bonding mode=active-backup
 EOF
 $CHROOT netctl enable bond0
+
+#----------------------------
+# chroot->network->bond0->br0
+#----------------------------
+cat > /mnt/etc/netctl/br0 <<EOF
+Interface=br0
+Connection=bridge
+BindsToInterfaces=(bond0)
+IP=static
+Address=('$BR0')
+Gateway='$GATEWAY'
+DNS=('$DNS1' '$DNS2')
+EOF
+$CHROOT netctl enable br0
 
 #-------------
 # yaourt

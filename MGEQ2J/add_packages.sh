@@ -23,8 +23,8 @@ $YAOURT aur/etckeeper
 #------------
 # container
 #------------
-$PACMAN docker lxc
-$YAOURT pipework-git
+$PACMAN docker lxc dnsmasq
+$YAOURT pipework-git yum
 
 #------------
 # fcron
