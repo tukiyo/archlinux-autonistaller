@@ -13,8 +13,11 @@ $PACMAN \
 $YAOURT nkf
 $YAOURT aur/etckeeper
 
-$PACMAN \
-  docker lxc pipework-git
+#------------
+# container
+#------------
+$PACMAN docker lxc
+$YAOURT pipework-git
 
 #------------
 # fcron
