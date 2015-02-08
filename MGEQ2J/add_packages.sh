@@ -10,20 +10,20 @@ YAOURT="$CHROOT yaourt -S --noconfirm"
 $PACMAN \
   net-tools wget screen \
   zsh git tig ranger ack w3m
-$YAOURT nkf
-$YAOURT aur/etckeeper
+#$YAOURT nkf
+#$YAOURT aur/etckeeper
 
 #------------
 # container
 #------------
 $PACMAN docker lxc
-$YAOURT pipework-git
+#$YAOURT pipework-git
 
 #------------
 # fcron
 #------------
-$YAOURT fcron
-$CHROOT systemctl enable fcron
+#$YAOURT fcron
+#$CHROOT systemctl enable fcron
 
 #------------
 # ntp
