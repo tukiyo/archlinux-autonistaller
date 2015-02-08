@@ -9,6 +9,7 @@ GATEWAY='192.168.100.1'
 DNS1='8.8.8.8'
 DNS2='8.8.4.4'
 BINDSTOINTERFACES="enp3s0f0"
+NEW_HOSTNAME="macmini01.local"
 
 #----------------------
 # partitioning /dev/sda
@@ -94,25 +95,30 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 #-------------
 CHROOT="arch-chroot /mnt"
 
+#---------------
+# chroot->locale
+#---------------
 $CHROOT sed -i -e 's/#ja_JP.UTF-8/ja_JP.UTF-8/' /etc/locale.gen
 $CHROOT sed -i -e 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 echo LANG=ja_JP.UTF-8 > /mnt/etc/locale.conf
 $CHROOT locale-gen
 echo KEYMAP=jp106 > /mnt/etc/vconsole.conf
 
+#-----------------
+# chroot->timezone
+#-----------------
 $CHROOT ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 $CHROOT hwclock --systohc --utc
-$CHROOT echo Arch >  /etc/hostname
 
-$CHROOT systemctl enable sshd
+#-------------------
+# chroot->bootloader
+#-------------------
 $CHROOT mkinitcpio -p linux
-$CHROOT passwd
-
 $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 $CHROOT grub-mkconfig -o /boot/grub/grub.cfg
 
 #-------------
-# network
+# chroot->network
 #-------------
 $CHROOT pacman -S --noconfirm netctl ifenslave
 echo "net.ipv4.ip_forward=1" > /mnt/etc/sysctl.d/99-sysctl.conf
@@ -134,8 +140,26 @@ EOF
 $CHROOT netctl enable bond0
 
 #-------------
+# yaourt
+#-------------
+grep "archlinuxfr" /mnt/etc/pacman.conf
+if [ $? -eq 1 ];then
+    cat >> /mnt/etc/pacman.conf <<EOF
+[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/\$arch
+EOF
+fi
+$CHROOT pacman -Sy --noconfirm archlinuxfr/yaourt
+
+#-------------
 # finish
 #-------------
+$CHROOT pacman -Syu --noconfirm
+$CHROOT pacman -Sc --noconfirm
+$CHROOT echo "$NEW_HOSTNAME" >  /etc/hostname
+$CHROOT systemctl enable sshd
+$CHROOT passwd
 set +x
 echo "--------------------------------"
 echo "install finished. please reboot."
