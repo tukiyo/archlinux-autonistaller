@@ -17,6 +17,7 @@ if [ $? != 0 ];then
 options kvm_intel nested=1
 EOF
 
+touch /mnt/etc/modules-load.d/virtio-net.conf
 grep "virtio-net" /mnt/etc/modules-load.d/virtio-net.conf
 if [ $? != 0 ];then
   cat >> /mnt/etc/modules-load.d/virtio-net.conf <<EOF
