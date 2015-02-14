@@ -8,7 +8,8 @@ BR0='192.168.100.2/24'
 GATEWAY='192.168.100.1'
 DNS1='8.8.8.8'
 DNS2='8.8.4.4'
-BOND0_INTERFACES="enp3s0f0"
+# enp3s0f0 : 内蔵NIC, enp60s0: 左側Thunderbolt Network"
+BOND0_INTERFACES="enp3s0f0 enp60s0"
 NEW_HOSTNAME="macmini01.local"
 
 #----------------------
