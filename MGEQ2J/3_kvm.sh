@@ -38,7 +38,7 @@ mkdir /mnt/root/.vnc/
 echo "setxkbmap -model jp106 -layout jp" >> /mnt/root/.vnc/xstartup
 echo "blackbox &" >> /mnt/root/.vnc/xstartup
 echo "virt-manager &" >> /mnt/root/.vnc/xstartup
-echo $VNCPASS | vncpasswd -f > /mnt/root/.vnc/passwd
+echo $VNCPASS | $CHROOT vncpasswd -f > /mnt/root/.vnc/passwd
 chmod 600 /mnt/root/.vnc/passwd
 
 #------------
