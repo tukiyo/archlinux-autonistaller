@@ -20,6 +20,18 @@ BindsToInterfaces=($BOND1_INTERFACES)
 EOF
 $CHROOT netctl enable bond1
 
+#----------------------------
+# chroot->network->bond1->br1
+#----------------------------
+cat > /mnt/etc/netctl/br1 <<EOF
+Interface=br1
+Connection=bridge
+BindsToInterfaces=(bond1)
+IP=static
+Address=('$BR1')
+EOF
+$CHROOT netctl enable br1
+
 #-------------------------
 # chroot->network->usb-net
 #-------------------------
@@ -30,7 +42,6 @@ usbnet
 ax88179_178a
 EOF
 fi
-$CHROOT netctl enable br1
 
 #------------
 # finish
