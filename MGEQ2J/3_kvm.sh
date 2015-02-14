@@ -16,6 +16,7 @@ if [ $? != 0 ];then
   cat >> /mnt/etc/modprobe.d/kvm-nested.conf <<EOF
 options kvm_intel nested=1
 EOF
+fi
 
 touch /mnt/etc/modules-load.d/virtio-net.conf
 grep "virtio-net" /mnt/etc/modules-load.d/virtio-net.conf
@@ -23,6 +24,7 @@ if [ $? != 0 ];then
   cat >> /mnt/etc/modules-load.d/virtio-net.conf <<EOF
 virtio-net
 EOF
+fi
 
 sed -i -e 's/^#user = "root"/user = "root"/' /mnt/etc/libvirt/qemu.conf
 
