@@ -7,8 +7,7 @@ YAOURT="$CHROOT sudo -u vagrant yaourt -S --noconfirm"
 #------------
 # kvm
 #------------
-$PACMAN qemu libvirt dmidecode ebtables
-$CHROOT systemctl enable libvirtd
+$PACMAN qemu libvirt dmidecode ebtables openbsd-netcat
 
 touch /mnt/etc/modprobe.d/kvm-nested.conf
 grep "kvm_intel" /mnt/etc/modprobe.d/kvm-nested.conf
@@ -28,18 +27,16 @@ fi
 
 sed -i -e 's/^#user = "root"/user = "root"/' /mnt/etc/libvirt/qemu.conf
 
-#------------
-# kvm->vnc
-#------------
-VNCPASS="VncP@ss"
-$PACMAN xorg-mkfontscale xorg-mkfontdir ttf-sazanami
-$PACMAN tigervnc blackbox xorg-setxkbmap xterm
-mkdir /mnt/root/.vnc/
-echo "setxkbmap -model jp106 -layout jp" >> /mnt/root/.vnc/xstartup
-echo "blackbox &" >> /mnt/root/.vnc/xstartup
-echo "virt-manager &" >> /mnt/root/.vnc/xstartup
-echo $VNCPASS | $CHROOT vncpasswd -f > /mnt/root/.vnc/passwd
-chmod 600 /mnt/root/.vnc/passwd
+$CHROOT systemctl enable libvirtd
+
+#-------------
+# virt-manager
+#-------------
+#$CHROOT systemctl enable docker
+#$CHROOT systemctl start docker
+#$CHROOT docker pull tukiyo3/virt-manager
+echo "docker run -it -d -p 5900:5900 tukiyo3/virt-manager" > /mnt/root/virt-manager.sh
+chmod +x /mnt/root/virt-manager.sh
 
 #------------
 # finish
