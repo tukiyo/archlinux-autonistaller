@@ -10,6 +10,7 @@ YAOURT="$CHROOT sudo -u vagrant yaourt -S --noconfirm"
 $PACMAN qemu libvirt dmidecode ebtables
 $CHROOT systemctl enable libvirtd
 
+touch /mnt/etc/modprobe.d/kvm-nested.conf
 grep "kvm_intel" /mnt/etc/modprobe.d/kvm-nested.conf
 if [ $? != 0 ];then
   cat >> /mnt/etc/modprobe.d/kvm-nested.conf <<EOF
