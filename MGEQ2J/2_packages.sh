@@ -18,13 +18,19 @@ $PACMAN \
   net-tools wget screen \
   zsh git tig ranger ack w3m
 $YAOURT nkf
+
+#----------
+# etckeeper
+#----------
 $YAOURT aur/etckeeper
+$CHROOT etckeeper init
+$CHROOT etckeeper commit init
 
 #------------
 # container
 #------------
 $PACMAN docker lxc dnsmasq
-$YAOURT pipework-git yum
+#$YAOURT pipework-git yum
 
 #------------
 # fcron

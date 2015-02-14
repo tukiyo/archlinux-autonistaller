@@ -176,6 +176,6 @@ $CHROOT echo "$NEW_HOSTNAME" > /mnt/etc/hostname
 $CHROOT systemctl enable sshd
 $CHROOT passwd
 set +x
-echo "--------------------------------"
-echo "install finished. please reboot."
-echo "--------------------------------"
+echo "-----------------"
+echo "install finished."
+echo "-----------------"
