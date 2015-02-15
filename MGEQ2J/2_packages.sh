@@ -29,8 +29,8 @@ $CHROOT etckeeper commit init
 #------------
 # container
 #------------
-$PACMAN docker lxc dnsmasq
-#$YAOURT pipework-git yum
+$PACMAN docker lxc dnsmasq protobuf-c
+$YAOURT yum
 
 #------------
 # fcron
@@ -53,6 +53,11 @@ server -4 ntp3.jst.mfeed.ad.jp
 EOF
 fi
 $CHROOT systemctl enable ntpd
+
+#------------
+# others
+#------------
+$PACMAN lm_sensors
 
 #------------
 # clear cache
