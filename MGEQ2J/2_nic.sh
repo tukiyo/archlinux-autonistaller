@@ -6,8 +6,8 @@ CHROOT="arch-chroot /mnt"
 # ネットワーク設定用
 #----------------------
 BR1='192.168.0.2/24'
-# ens9 : 右側Thunderbolt Network, enp0s20u1 : USB-LAN"
-BOND1_INTERFACES="ens9 enp0s20u1"
+# enp60s0: 左側Thunderbolt NIC, ens9 : 右側Thunderbolt NIC"
+BOND1_INTERFACES="enp60s0 ens9"
 
 #-----------------------
 # chroot->network->bond1
