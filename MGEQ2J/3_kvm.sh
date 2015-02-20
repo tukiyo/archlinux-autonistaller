@@ -1,6 +1,4 @@
 #!/bin/sh
-exit 0
-
 set -ux
 CHROOT="arch-chroot /mnt"
 PACMAN="$CHROOT pacman -S --noconfirm"
@@ -34,11 +32,11 @@ $CHROOT systemctl enable libvirtd
 #-------------
 # virt-manager
 #-------------
-#$CHROOT systemctl enable docker
-#$CHROOT systemctl start docker
-#$CHROOT docker pull tukiyo3/virt-manager
-#echo "docker run -it -d -p 5900:5900 tukiyo3/virt-manager" > /mnt/root/virt-manager.sh
-#chmod +x /mnt/root/virt-manager.sh
+$CHROOT systemctl enable docker
+$CHROOT systemctl start docker
+$CHROOT docker pull tukiyo3/virt-manager
+echo "docker run -it -d -p 5900:5900 tukiyo3/virt-manager" > /mnt/root/virt-manager.sh
+chmod +x /mnt/root/virt-manager.sh
 
 #------------
 # finish
